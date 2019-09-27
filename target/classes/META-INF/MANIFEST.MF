@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: SB_VISHWA_CORPORATE_UM
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: tharanga
+Implementation-Vendor-Id: guru.springframework
+Build-Jdk: 1.8.0_221
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/SB_VISHWA_CORPORATE_UM
+Created-By: Maven Integration for Eclipse
+Main-Class: guru.springframework.SpringBootWebApplication
+
