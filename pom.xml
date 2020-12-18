@@ -1,110 +1,242 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>guru.springframework</groupId>
-	<artifactId>SB_VISHWA_CORPORATE_UM</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-	<name>SB_VISHWA_CORPORATE_UM</name>
-	<description>SB_VISHWA_CORPORATE_UM</description>
+	<groupId>com.nable.sampath.oc</groupId>
+	<artifactId>sb_java_cor_epfetf</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+	
+	<properties>
+        <java.version>1.8</java.version>
+        <junit-jupiter.version>5.3.2</junit-jupiter.version>
+        <mockito.version>2.24.0</mockito.version>
+    </properties>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.1.3.RELEASE</version>
 	</parent>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<!-- The main class to start by executing java -jar 
-        <start-class>guru.springframework.h2db.SpringBootAppH2db</start-class>  -->
-        <start-class>guru.springframework.SpringBootWebApplication</start-class>
-        <!-- <spring-boot.version>2.0.4.RELEASE</spring-boot.version>   -->
-	</properties>
+
+	<repositories>
+		<repository>
+			<id>com.ibm.db2.jcc</id>
+			<url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+		</repository>
+		 <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/n-ableprivatelimitedcolombosrilanka/SB_JAVA_COR_Common-Utils</url>
+        </repository>
+ 	</repositories>
 	<dependencies>
+
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
+			<groupId>biz.nable.sb.cor.common.utils</groupId>
+			<artifactId>SB_COR_Common-Utils</artifactId>
+			<version>0.0.12-GA</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+			    <!-- inbuilt logging libries should be excluded -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<!--  Add the log4j2 which is the latest logging frame work . log4j - > logback - > log4j2 		 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.fusesource.jansi/jansi  : used to color logs in windows -->
+		<dependency>
+    		<groupId>org.fusesource.jansi</groupId>
+    		<artifactId>jansi</artifactId>
+    		<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<!-- SPRING SECURITY -->	
+		
 		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<scope>test</scope>
-		</dependency>
-        <dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.8.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.8.0</version>
-			<scope>compile</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		
-        <!--test dependencies-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+			  
+		<!-- @RepositoryRestResource --> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		
+		<!-- used for ui
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		-->
 
+		<!-- Test frame work :
+		Spring-boot version ≥2.2.x
+
+		If you are using spring-boot version ≥2.2.x, spring-boot-starter-test brings in junit-jupiter-engine and junit-vintage-engine dependencies with it. 
+		So you don’t have to explicitly specify these two dependencies.
+		Make sure you still use maven-surefire-plugin version ≥2.22.2 in order for your tests to run successfully.
+		
+		Please find my JUnit 5 (Jupiter) sample reference project here > https://github.com/shaunthomas999/junit5-samples.
+		https://medium.com/@shaunthomas999/junit-5-jupiter-dependency-management-with-maven-in-spring-boot-application-a5e7186b30eb
+		 -->
+		 
+		 <!-- exclude junit 4 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
-
+        
+        <!-- Junit 5 -->
 		<dependency>
-             <groupId>org.springframework.boot</groupId>
-             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
 
-         <dependency>
-             <groupId>com.jayway.restassured</groupId>
-             <artifactId>rest-assured</artifactId>
-             <version>2.8.0</version>
-             <scope>test</scope>
-          </dependency>
-          <dependency>
-             <groupId>org.codehaus.groovy</groupId>
-             <artifactId>groovy-all</artifactId>
-             <version>2.4.5</version>
-          </dependency>		
-		
-		<!--Test -->
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.junit.platform</groupId>
+		    <artifactId>junit-platform-launcher</artifactId>
+
+		    <scope>test</scope>
+		</dependency>
 		 
-		<!-- Adding H2 database -->
+		<!-- Mockito extention -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-junit-jupiter</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<!-- Vintage Engine will enabl to use junit4 test cases also -->
+		 <dependency>
+		    <groupId>org.junit.vintage</groupId>
+		    <artifactId>junit-vintage-engine</artifactId>
+		    <scope>test</scope>
+		  </dependency>
+
+		<!-- Bellow dependency requied add WebTestClient for testing perposes -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-webflux</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!--  END OF TEST DEPENDENCIES -->
 		
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>1.4.199</version>
-		  
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>2.8.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.4.5</version>
 		</dependency>
 		
-	
+		 <!-- hot swapping, disable cache for template, enable live reload -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+			<scope>compile</scope>
+		</dependency>
 
-   
-
-		
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<!-- Optional database for testing perposes -->
+		<dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency> 
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+		</dependency>
+        
 	</dependencies>
 	<build>
 		<plugins>
@@ -112,50 +244,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
-			<!-- TDD -->
 			<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-failsafe-plugin</artifactId>
-			<executions>
-				<execution>
-					<id>integration-test</id>
-					<goals>
-						<goal>integration-test</goal>
-					</goals>
-				</execution>
-				<execution>
-					<id>verify</id>
-					<phase>verify</phase>
-					<goals>
-						<goal>verify</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-		<plugin>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<executions>
-				<execution>
-					<id>pre-integration-test</id>
-					<goals>
-						<goal>start</goal>
-					</goals>
-				</execution>
-				<execution>
-					<id>post-integration-test</id>
-					<goals>
-						<goal>stop</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-			
-			
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+			</plugin>
 		</plugins>
 	</build>
-	
-
-    
+	    <!--
+        <distributionManagement>
+           <repository>
+                 <id>github</id>
+                 <name>WORKFLOW</name>
+                 <url>https://maven.pkg.github.com/n-ableprivatelimitedcolombosrilanka/SB_JAVA_COR_WORKFLOW</url>
+           </repository>
+        </distributionManagement>
+       -->
 </project>
