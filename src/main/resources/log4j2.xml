@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+	<Properties>
+
+      <Property name="log-path">/opt/IBM/WebSphere/AppServer/profiles/ESB_DEV/logs/workflow</Property> 
+   	 <!-- 	For locall development    -->
+	  <!-- 	 <Property name="log-path">C:\Users\tharanga\Documents\logs</Property>      -->
+
+<!--		<Property name="log-path">/opt/IBM/WebSphere/AppServer/profiles/ESB_DEV/logs/workflow</Property> -->
+		<!--  <Property name="log-path">/home/suneth/loges</Property>-->
+
+<!--		 <file>/home/suneth/loges/workflow.log</file>-->
+	<!--	<Property name="log-path">C:\Users\tharanga\Documents\N-able\Projects\SAMPATH\SB_OC_Workflow\logs</Property>  -->
+	</Properties>
+	
+	
+	<Appenders>
+	
+		<Console name="Console-Appender" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{id}] [%X{apiName}] [%X{user}] %c{1} %X{traceId} - %msg%n
+				</pattern>
+			</PatternLayout>
+		</Console>
+		
+		<!-- Rolling File Appender -->
+		<RollingFile name="App-File-Appender" fileName="${log-path}/workflow-info.log"
+			filePattern="${log-path}/workflow-info_%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT"/>
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{id}] [%X{apiName}] [%X{user}] %c{1} %X{traceId} - %msg%n
+				</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"/>
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<!-- Rolling File Appender -->
+		<RollingFile name="Error-File-Appender" fileName="${log-path}/workflow-error.log"
+			filePattern="${log-path}/workflow-error_%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{id}] [%X{apiName}] [%X{user}] %c{1} %X{traceId} - %msg%n
+				</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"/>
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<File name="SpringBoot-File-Appender" fileName="${log-path}/workflow-springboot.log">
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} %X{traceId} - %msg%n
+				</pattern>
+			</PatternLayout>
+		</File>
+		
+	</Appenders>
+	<Loggers>
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="SpringBoot-File-Appender" />
+			<AppenderRef ref="Error-File-Appender" />
+			<AppenderRef ref="Console-Appender" />
+		</Logger>
+		<Logger name="biz.nable.sampath.oc" level="info" additivity="false">
+			<AppenderRef ref="App-File-Appender" />
+			<AppenderRef ref="Error-File-Appender" />
+			<AppenderRef ref="Console-Appender" />
+		</Logger>
+		<logger name="org.springframework.boot.context.web.ErrorPageFilter">
+			<level value="OFF" />
+		</logger>
+		<Root>
+			<AppenderRef ref="Console-Appender" />
+		</Root>
+
+	</Loggers>
+</Configuration>
